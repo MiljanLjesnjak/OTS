@@ -93,6 +93,10 @@ public class LoginPage extends BasePage {
         return driver.findElement(this.loginButton).isDisplayed();
     }
 
+    public boolean isErrorVisible() {
+        return driver.findElement(this.errorMessage).isDisplayed();
+    }
+
     public String getErrorMessage() {
         try {
             return driver.findElement(errorMessage).getText();

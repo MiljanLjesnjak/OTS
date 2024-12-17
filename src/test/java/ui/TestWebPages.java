@@ -7,10 +7,7 @@ import com.utils.WebDriverFabric;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import static org.testng.Assert.*;
 
@@ -23,6 +20,17 @@ public class TestWebPages {
     private static final String PASSWORD = "secret_sauce";
     public static final String INVALID_USERNAME = "invalid_user";
     public static final String INVALID_PASSWORD = "invalid_password";
+
+    @DataProvider(name = "invalidLoginData")
+    public static Object[][] invalidLoginData() {
+        return new Object[][]{
+                {INVALID_USERNAME, PASSWORD, "Epic sadface: Username and password do not match any user in this service"},
+                {USERNAME, INVALID_PASSWORD, "Epic sadface: Username and password do not match any user in this service"},
+                {INVALID_USERNAME, INVALID_PASSWORD, "Epic sadface: Username and password do not match any user in this service"},
+                {"", INVALID_PASSWORD, "Epic sadface: Username is required"},
+                {USERNAME, "", "Epic sadface: Password is required"}
+        };
+    }
 
     @Parameters({"browser"})
     @BeforeMethod
@@ -67,70 +75,20 @@ public class TestWebPages {
         log.info("************* Test Ended *************");
     }
 
-    @Test
-    public void testInvalidLogin() {
+    @Test(dataProvider = "invalidLoginData")
+    public void testInvalidLogin(String username, String password, String errorMessage) {
 
         log.info("************* Test Started: Invalid Login *************");
 
+        // Login
         LoginPage loginPage = new LoginPage(driver);
 
-        // 1) INVALID USERNAME - VALID PASSWORD
-        loginPage.typeOnUsernameFieldName(INVALID_USERNAME);
-        loginPage.typeOnPasswordField(PASSWORD);
+        loginPage.typeOnUsernameFieldName(username);
+        loginPage.typeOnPasswordField(password);
         loginPage.clickOnLoginButton();
 
-        assertTrue(loginPage.getErrorMessage()
-                .contains("Epic sadface: Username and password do not match any user in this service"));
-        //-------------------------------------
-
-
-        // 2) VALID USERNAME - INVALID PASSWORD
-        loginPage.typeOnUsernameFieldName(USERNAME);
-        loginPage.typeOnPasswordField(INVALID_PASSWORD);
-        loginPage.clickOnLoginButton();
-
-        assertTrue(loginPage.getErrorMessage()
-                .contains("Epic sadface: Username and password do not match any user in this service"));
-        //-------------------------------------
-
-
-        // 3) INVALID USERNAME - INVALID PASSWORD
-        loginPage.typeOnUsernameFieldName(INVALID_USERNAME);
-        loginPage.typeOnPasswordField(INVALID_PASSWORD);
-        loginPage.clickOnLoginButton();
-
-        assertTrue(loginPage.getErrorMessage()
-                .contains("Epic sadface: Username and password do not match any user in this service"));
-        //-------------------------------------
-
-
-        // 4) NO USERNAME
-        loginPage.clearUsernameField();
-        loginPage.typeOnPasswordField(INVALID_PASSWORD);
-        loginPage.clickOnLoginButton();
-
-        log.error(loginPage.getErrorMessage());
-        assertTrue(loginPage.getErrorMessage().contains("Epic sadface: Username is required"));
-        //-------------------------------------
-
-        // 4) NO PASSWORD
-        loginPage.typeOnUsernameFieldName(INVALID_USERNAME);
-        loginPage.clearPasswordField();
-        loginPage.clickOnLoginButton();
-
-        assertTrue(loginPage.getErrorMessage().contains("Epic sadface: Password is required"));
-        //-------------------------------------
-
-        // 4) NO USERNAME, NO PASSWORD
-        loginPage.clearUsernameField();
-        loginPage.clearPasswordField();
-        loginPage.clickOnLoginButton();
-
-        assertTrue(loginPage.getErrorMessage().contains("Epic sadface: Username is required"));
-        //-------------------------------------
-
-
-
+        assertTrue(loginPage.isErrorVisible(), "Error not visible.");
+        assertTrue(loginPage.getErrorMessage().contains(errorMessage), "Error not containing expected error message");
 
         log.info("************* Test Ended: Invalid Login *************");
     }
