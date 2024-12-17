@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertTrue;
 
 public class TestWebPages {
 
