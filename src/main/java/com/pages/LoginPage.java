@@ -25,34 +25,6 @@ public class LoginPage extends BasePage {
 
     private final By errorMessage = By.cssSelector("h3[data-test='error']");
 
-
-
-    public void clearUsernameField() {
-        log.info("Clearing username field");
-
-        WebElement usernameFieldElement = driver.findElement(usernameField);
-
-        // Brisemo ovako jer .clear() ne radi?
-        String usernameValue = usernameFieldElement.getAttribute("value");
-        for (int i = 0; i < usernameValue.length(); i++) {
-            usernameFieldElement.sendKeys(Keys.BACK_SPACE);
-        }
-    }
-
-    public void clearPasswordField() {
-        log.info("Clearing password field");
-
-        WebElement passwordFieldElement = driver.findElement(passwordField);
-
-        // Brisemo ovako jer .clear() ne radi?
-        String usernameValue = passwordFieldElement.getAttribute("value");
-        for (int i = 0; i < usernameValue.length(); i++) {
-            passwordFieldElement.sendKeys(Keys.BACK_SPACE);
-        }
-
-
-    }
-
     public void typeOnUsernameFieldName(String username){
 
         WebElement nameField =
@@ -94,10 +66,6 @@ public class LoginPage extends BasePage {
     }
 
     public String getErrorMessage() {
-        try {
             return driver.findElement(errorMessage).getText();
-        } catch (Exception e) {
-            return "";
-        }
     }
 }

@@ -44,11 +44,7 @@ public class ProductsPage extends BasePage {
     }
 
     public boolean isProductInCart() {
-        try {
             return driver.findElement(By.id("item_5_title_link")).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public void fillInCheckoutForm() {
