@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/.idea/
+/target/
+/test-output/
+.classpath
+.project
+.settings/
+*.log
