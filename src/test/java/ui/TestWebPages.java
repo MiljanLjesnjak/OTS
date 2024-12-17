@@ -21,6 +21,10 @@ public class TestWebPages {
     public static final String INVALID_USERNAME = "invalid_user";
     public static final String INVALID_PASSWORD = "invalid_password";
 
+    public static final String CHECKOUT_NAME = "Miljan";
+    public static final String CHECKOUT_LASTNAME = "Ljesnjak";
+    public static final String CHECKOUT_POSTAL_CODE = "26101";
+
     @DataProvider(name = "invalidLoginData")
     public static Object[][] invalidLoginData() {
         return new Object[][]{
@@ -116,7 +120,8 @@ public class TestWebPages {
         productsPage.clickCheckoutButton();
         assertTrue(productsPage.getCurrentUrl().contains(ProductsPage.CHECKOUT_URL_1), "Failed going to checkout.");
 
-        productsPage.fillInCheckoutForm();
+        productsPage.fillInCheckoutForm(CHECKOUT_NAME, CHECKOUT_LASTNAME, CHECKOUT_POSTAL_CODE);
+        
         assertTrue(productsPage.getCurrentUrl().contains(ProductsPage.CHECKOUT_URL_2), "Failed filling checkout info.");
         assertTrue(productsPage.isProductInCart(), "Product is not in cart.");
 

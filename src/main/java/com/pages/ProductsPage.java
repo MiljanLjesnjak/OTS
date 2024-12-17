@@ -47,14 +47,14 @@ public class ProductsPage extends BasePage {
             return driver.findElement(By.id("item_5_title_link")).isDisplayed();
     }
 
-    public void fillInCheckoutForm() {
-        driver.findElement(firstNameField).sendKeys("Miljan");
+    public void fillInCheckoutForm(String name, String lastname, String postal_code) {
+        driver.findElement(firstNameField).sendKeys(name);
 
         // Find the last name field and enter the value
-        driver.findElement(lastNameField).sendKeys("Ljesnjak");
+        driver.findElement(lastNameField).sendKeys(lastname);
 
         // Find the postal code field and enter the value
-        driver.findElement(postalCodeField).sendKeys("26101");
+        driver.findElement(postalCodeField).sendKeys(postal_code);
 
         // Click the continue button
         driver.findElement(continueButton).click();
